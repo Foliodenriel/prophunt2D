@@ -29,9 +29,11 @@ io.on('connection', function(socket) {
 
     console.log('Welcome message! player in this room: ' + Object.keys(players).length);
 
-    socket.emit('currentPlayers', players);
-    console.log('currentPlayers emitted.');
-    socket.broadcast.emit('newPlayer', players[socket.id]);
+    socket.on('addnewplayer', function() {
+
+        socket.emit('currentPlayers', players);
+        socket.broadcast.emit('newPlayer', players[socket.id]);
+    });
 
     socket.on('movePlayer', function(player) {
 

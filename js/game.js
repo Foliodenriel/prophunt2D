@@ -28,6 +28,7 @@ var client;
 function preload() {
 
     client = new Client(); // Generating client class for socket handling
+    client.addNewPlayer();
 
     //this.load.setBaseURL('http://127.0.0.1:3000/');
 
@@ -52,6 +53,7 @@ function create() {
 
     client.socket.on('currentPlayers', function(players) {
 
+        console.log('');
         Object.keys(players).forEach(function(id) {
             if (players[id].playerId !== client.socket.id) {
 
@@ -131,5 +133,7 @@ function update() {
 
 function addPlayer(self, player) {
 
-    self.physics.add.image(player.posX, player.posY, 'player').setOrigin(0.5, 0.5).setScale(0.1);
+    const otherPlayer = self.physics.add.image(player.posX, player.posY, 'player').setScale(0.1);
+    otherPlayer.playerId = player.playerId;
+    otherPlayers.add(otherPlayer);
 }
