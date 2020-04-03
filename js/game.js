@@ -104,14 +104,13 @@ function update() {
         player.setVelocityY(-300);
     }
 
-    if (player.oldPos.posX !== player.posX || player.oldPos.posY !== player.posY) {
+    if (player.oldPos.posX !== player.x || player.oldPos.posY !== player.y) {
 
         var newPlayerObjectPos = {
             posX: player.x,
             posY: player.y,
             playerId: client.socket.id
         }
-        //console.log(newPlayerObjectPos);
         client.socket.emit('movePlayer', newPlayerObjectPos);
     }
 
@@ -132,6 +131,5 @@ function update() {
 
 function addPlayer(self, player) {
 
-    // console.log('(' + player.posX + ', ' + player.posY + ')');
     self.physics.add.image(player.posX, player.posY, 'player').setOrigin(0.5, 0.5).setScale(0.1);
 }

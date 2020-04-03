@@ -36,9 +36,8 @@ io.on('connection', function(socket) {
     socket.on('movePlayer', function(player) {
 
         players[player.playerId].posX = player.posX;
-        players[player.playerId].posY = player.posX;
+        players[player.playerId].posY = player.posY;
         socket.broadcast.emit('newPlayerPos', players[player.playerId]);
-        socket.emit('wow', 'This is a message from server!');
     });
 
     // Send emit signal for current socket info to get back
