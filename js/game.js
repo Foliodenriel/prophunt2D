@@ -34,19 +34,39 @@ function preload() {
 
     this.load.image('player', 'assets/gobble.png');
     this.load.image('ground', 'assets/ground.png');
+    this.load.spritesheet('player_sprite', 'assets/full_sprite.png', { frameWidth: 300, frameHeight: 300 });
 }
 
 function create() {
 
     var self = this;
 
-    player = this.physics.add.image(200, 200, 'player').setScale(0.1);
+//    game.world.setBounds(0, 0, 1920, 1920); Size map
+//    game.camera.follow(player); Follow player
+
+
+//    player = this.physics.add.image(200, 200, 'player').setScale(0.1);
+    player = this.physics.add.sprite(200, 200, 'player_sprite').setScale(0.2);
     player.setBounce(0);
     player.setCollideWorldBounds(true);
     player.oldPos = {
         posX: player.x,
         posY: player.y,
     }
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('player_sprite', { start: 12, end: 23 }),
+        frameRate: 10000,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('player_sprite', { start: 0, end: 11 }),
+        frameRate: 10000,
+        repeat: -1
+    });
 
     platforms = this.physics.add.staticGroup();
     otherPlayers = this.physics.add.group();
@@ -99,15 +119,21 @@ function update() {
     if (cursors.left.isDown) {
 
         player.setVelocityX(-200);
+
+        player.anims.play('left', true);
     } else if (cursors.right.isDown) {
 
         player.setVelocityX(200);
+
+        player.anims.play('right', true);
     } else if (cursors.left.isUp) {
 
         player.setVelocityX(0);
+        player.anims.stop();
     } else if (cursors.right.isUp) {
 
         player.setVelocityX(0);
+        player.anims.stop();
     }
     
     if (cursors.up.isDown && player.body.touching.down)
