@@ -69,6 +69,15 @@ function create() {
         otherPlayers.add(otherPlayer);
     });
 
+    client.socket.on('newPlayerPos', function(movingPlayer) {
+
+        otherPlayers.getChildren().forEach(function (otherPlayer) {
+            if (otherPlayer.playerId === movingPlayer.playerId) {
+                otherPlayer.setPosition(movingPlayer.posX, movingPlayer.posY);
+            }
+        });
+    });
+
     cursors = this.input.keyboard.createCursorKeys();
 
     this.physics.add.collider(player, platforms);
@@ -116,11 +125,11 @@ function update() {
         client.socket.emit('movePlayer', newPlayerObjectPos);
     }
 
-    client.socket.on('newPlayerPos', function(movingPlayer) {
+    client.socket.on('disconnect', function(socketId) {
 
         otherPlayers.getChildren().forEach(function (otherPlayer) {
-            if (otherPlayer.playerId === movingPlayer.playerId) {
-                otherPlayer.setPosition(movingPlayer.posX, movingPlayer.posY);
+            if (otherPlayer.playerId === socketId) {
+                otherPlayers.remove(otherPlayer, true, true);
             }
         });
     });

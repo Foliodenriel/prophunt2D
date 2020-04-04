@@ -45,10 +45,9 @@ io.on('connection', function(socket) {
     // Send emit signal for current socket info to get back
     // Send broadcast signal for all other users to get info about your connection
 
-    socket.on('disconnect', function(socket) {
+    socket.on('disconnect', function() {
 
         console.log('Good bye!');
-
         delete players[socket.id];
         io.emit('disconnect', socket.id);
     });
