@@ -40,6 +40,7 @@ function preload() {
     this.load.image('tiles', 'assets/tiles.png');
     this.load.tilemapCSV('map', 'assets/map.csv');
     this.load.image('player', 'assets/gobble.png');
+    this.load.spritesheet('player_sprite', 'assets/full_sprite.png', { frameWidth: 300, frameHeight: 300 });
 }
 
 function create() {
@@ -52,7 +53,11 @@ function create() {
     const layer = map.createStaticLayer(0, tiles, 0, 0);
     layer.setCollisionBetween(0, 5);
 
-    player = this.physics.add.image(100, 400, 'player').setScale(0.1);
+//    game.world.setBounds(0, 0, 1920, 1920); Size map
+//    game.camera.follow(player); Follow player
+
+    player = this.physics.add.sprite(200, 200, 'player_sprite').setScale(0.2);
+
     player.setBounce(0);
     player.setCollideWorldBounds(true);
     player.oldPos = {
@@ -61,6 +66,20 @@ function create() {
     }
 
     this.physics.add.collider(player, layer);
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('player_sprite', { start: 12, end: 23 }),
+        frameRate: 10000,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('player_sprite', { start: 0, end: 11 }),
+        frameRate: 10000,
+        repeat: -1
+    });
 
     otherPlayers = this.physics.add.group();
 
@@ -102,14 +121,20 @@ function update() {
         goingLeft = true;
         goingRight = false;
         player.setVelocityX(-250);
+        player.anims.play('left', true);
     } else if (cursors.right.isDown) {
         goingRight = true;
         goingLeft = false;
         player.setVelocityX(250);
-    } else if (cursors.left.isUp)
+        player.anims.play('right', true);
+    } else if (cursors.left.isUp) {
         player.setVelocityX(0);
-    else if (cursors.right.isUp)
+        player.anims.stop();
+    }
+    else if (cursors.right.isUp) {
         player.setVelocityX(0);
+        player.anims.stop();
+    }
 
     // Player speed deceleration if user release left/right arrow key
     if (!onFloor) {
