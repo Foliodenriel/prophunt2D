@@ -72,15 +72,15 @@ function create() {
 
     this.anims.create({
         key: 'right',
-        frames: this.anims.generateFrameNumbers('player_sprite', { start: 12, end: 23 }),
-        frameRate: 10000,
+        frames: this.anims.generateFrameNumbers('player_sprite', { start: 7, end: 13 }),
+        frameRate: 20,
         repeat: -1
     });
 
     this.anims.create({
         key: 'left',
-        frames: this.anims.generateFrameNumbers('player_sprite', { start: 0, end: 11 }),
-        frameRate: 10000,
+        frames: this.anims.generateFrameNumbers('player_sprite', { start: 0, end: 6 }),
+        frameRate: 20,
         repeat: -1
     });
 
